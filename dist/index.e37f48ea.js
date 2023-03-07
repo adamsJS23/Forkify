@@ -573,14 +573,14 @@ const timeout = function(s) {
 // https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886?key=<insert your key>
 async function loadRecipe() {
     try {
-        // const recipeId = '5ed6604591c37cdc054bc886';
-        const recipeId = "5ed6604591c37cdc054bcd09";
-        const response = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}?`);
+        const id = window.location.hash.slice(1);
+        if (!id) return;
+        const response = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}?`);
         const data = await response.json();
         if (!response.ok) throw new Error(`${data.message}, ${response.status}`);
         let { recipe  } = data.data;
         // console.log(recipe)
-        return {
+        recipe = {
             id: recipe.id,
             title: recipe.title,
             publisher: recipe.publisher,
@@ -590,12 +590,14 @@ async function loadRecipe() {
             ingredients: recipe.ingredients,
             image: recipe.image_url
         };
+        clearContainer();
+        renderRecipe(recipe);
     } catch (err) {
         console.log(err.message);
     }
 }
-async function renderRecipe(recipe) {
-    const data = await loadRecipe();
+async function renderRecipe(data) {
+    // const data = await loadRecipe();
     console.log(data);
     const markUp = `<figure class="recipe__fig">
                       <img src="${data.image}" alt="${data.title}" class="recipe__img" />
@@ -687,9 +689,13 @@ function renderIngredients(ingredient) {
           </div>
         </li>`;
 }
-loadRecipe();
-clearContainer();
-renderRecipe();
+// Listening for the hashchange and load event to load a recipe
+[
+    "hashchange",
+    "load"
+].forEach((event)=>{
+    window.addEventListener(event, loadRecipe);
+});
 
 },{"url:../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"loVOp":[function(require,module,exports) {
 module.exports = require("dd164bdab3275bef").getBundleURL("hWUTQ") + "icons.dfd7a6db.svg" + "?" + Date.now();

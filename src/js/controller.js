@@ -15,10 +15,12 @@ const timeout = function (s) {
 
 async function loadRecipe() {
   try {
-    // const recipeId = '5ed6604591c37cdc054bc886';
-    const recipeId = '5ed6604591c37cdc054bcd09';
+    const id = window.location.hash.slice(1);
+
+    if (!id) return;
+
     const response = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}?`
+      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}?`
     );
     const data = await response.json();
 
@@ -26,7 +28,7 @@ async function loadRecipe() {
 
     let { recipe } = data.data;
     // console.log(recipe)
-    return {
+    recipe = {
       id: recipe.id,
       title: recipe.title,
       publisher: recipe.publisher,
@@ -36,18 +38,22 @@ async function loadRecipe() {
       ingredients: recipe.ingredients,
       image: recipe.image_url,
     };
+
+    clearContainer();
+
+    renderRecipe(recipe);
   } catch (err) {
     console.log(err.message);
   }
 }
 
-async function renderRecipe(recipe) {
-  const data = await loadRecipe();
+async function renderRecipe(data) {
+  // const data = await loadRecipe();
   console.log(data);
   const markUp = `<figure class="recipe__fig">
                       <img src="${data.image}" alt="${
-                           data.title
-                            }" class="recipe__img" />
+    data.title
+  }" class="recipe__img" />
                                   <h1 class="recipe__title">
                                     <span>${data.title}</span>
                                   </h1>
@@ -135,23 +141,20 @@ function clearContainer() {
 }
 
 function renderIngredients(ingredient) {
-  let {unit,quantity,description}=ingredient
+  let { unit, quantity, description } = ingredient;
   return `<li class="recipe__ingredient">
           <svg class="recipe__icon">
             <use href="${icons}#icon-check"></use>
           </svg>
-          <div class="recipe__quantity">${
-            quantity ? quantity : ''
-          }</div>
+          <div class="recipe__quantity">${quantity ? quantity : ''}</div>
           <div class="recipe__description">
-            <span class="recipe__unit">${
-              unit ? unit: ''
-            }</span>
+            <span class="recipe__unit">${unit ? unit : ''}</span>
             ${description}
           </div>
         </li>`;
 }
 
-loadRecipe();
-clearContainer();
-renderRecipe();
+// Listening for the hashchange and load event to load a recipe
+['hashchange', 'load'].forEach(event => {
+  window.addEventListener(event, loadRecipe);
+});
