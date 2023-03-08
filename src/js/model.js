@@ -1,12 +1,18 @@
+
+/************************************************************************ */
+/*********************MODEL, -STATE-BUSINESS LOGIC- HTTP LIBRARY**********/
+/************************************************************************ */
+
+
+/******Our state object ******/ 
 export const state = {
   recipe: {},
   search: {},
   bookmarks: '',
 };
-
+/************************** */
 export async function loadRecipe(id) {
   try {
-    if (!id) return;
 
     const response = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes/${id}?`
@@ -16,7 +22,7 @@ export async function loadRecipe(id) {
     if (!response.ok) throw new Error(`${data.message}, ${response.status}`);
 
     const { recipe } = data.data;
-    // console.log(recipe)
+
     state.recipe = {
       id: recipe.id,
       title: recipe.title,

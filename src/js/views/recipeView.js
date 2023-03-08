@@ -1,21 +1,24 @@
+/************************************************************************ */
+/**********VIEW, - RENDERING THE RECIPE FROM THE API TO THE ***************/
+/***********************BY USING CLASSES******************************** */
+
 import icons from 'url:../../img/icons.svg';
+import { Fraction } from 'fractional';
+
 class RecipeView {
   _parentElement = document.querySelector('.recipe');
   _data;
-  _message = 'Recipe not found';
+  _Errormessage = 'No recipes found for your query. Please try again!';
+  _message = 'Start by searching for a recipe or an ingredient. Have fun!';
 
   render(data) {
     this._data = data;
-    
-    this._clearContainer()
-
-    this._parentElement.insertAdjacentHTML(
-      'afterbegin',
-      this._generateMarkup(this._data)
-    );
+    const markUp = this._generateMarkup();
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markUp);
   }
 
-  _clearContainer() {
+  _clear() {
     this._parentElement.innerHTML = '';
   }
 
@@ -115,17 +118,48 @@ class RecipeView {
             <svg class="recipe__icon">
               <use href="${icons}#icon-check"></use>
             </svg>
-            <div class="recipe__quantity">${quantity ? quantity : ''}</div>
+            <div class="recipe__quantity">${
+              quantity ? new Fraction(quantity).toString() : ''
+            }</div>
             <div class="recipe__description">
               <span class="recipe__unit">${unit ? unit : ''}</span>
               ${description}
             </div>
           </li>`;
   }
+  renderSpinner() {
+    const markUp = `<div class="spinner">
+                      <svg>
+                        <use href="${icons}#icon-loader"></use>
+                      </svg>
+                    </div>`;
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markUp);
+  }
+  renderError(message = this._Errormessage) {
+    this._clear();
+    const markUp = `<div class="error">
+                    <div>
+                        <svg>
+                          <use href="${icons}#icon-alert-triangle"></use>
+                        </svg>
+                      </div>
+                      <p>${message}</p>
+                  </div>`;
+    this._parentElement.insertAdjacentHTML('afterbegin', markUp);
+  }
 
-  renderMessage(message){
-    this._clearContainer()
-    this._parentElement.insertAdjacentText('afterbegin', message)
+  renderMessage(message = this._message) {
+    this._clear();
+    const markUp = `<div class="message">
+                    <div>
+                      <svg>
+                        <use href="${icons}#icon-smile"></use>
+                      </svg>
+                    </div>
+                    <p>${message}</p>
+                  </div>`;
+    this._parentElement.insertAdjacentHTML('afterbegin', markUp);
   }
 
   // Listening for the hashchange and load event to load a recipe
