@@ -8,7 +8,7 @@ import icons from 'url:../../img/icons.svg';
 class RecipeView {
   _parentElement = document.querySelector('.recipe');
   _data;
-  _Errormessage = 'No recipes found for your query. Please try again!';
+  _errorMessage = 'We could not find that recipe. Please try an other one!';
   _message = 'Start by searching for a recipe or an ingredient. Have fun!';
 
   render(data) {
@@ -136,7 +136,7 @@ class RecipeView {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markUp);
   }
-  renderError(message = this._Errormessage) {
+  renderError(message = this._errorMessage) {
     this._clear();
     const markUp = `<div class="error">
                     <div>
@@ -163,7 +163,7 @@ class RecipeView {
   }
 
   // Listening for the hashchange and load event to load a recipe
-  hashchangeHandler(handler) {
+  addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(event => {
       window.addEventListener(event, handler);
     });

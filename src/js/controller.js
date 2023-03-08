@@ -31,12 +31,12 @@ async function controlRecipes() {
     // Rendering the recipe in the the recipe view
     RecipeView.render(model.state.recipe);
   } catch (err) {
-    RecipeView.renderError(err);
+    RecipeView.renderError();
     console.error(err);
   }
 }
 
 function init() {
-  RecipeView.hashchangeHandler(controlRecipes);
+  RecipeView.addHandlerRender(controlRecipes);
 }
 init();

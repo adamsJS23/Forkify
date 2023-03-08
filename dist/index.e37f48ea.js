@@ -582,12 +582,12 @@ async function controlRecipes() {
         // Rendering the recipe in the the recipe view
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
     } catch (err) {
-        (0, _recipeViewJsDefault.default).renderError(err);
+        (0, _recipeViewJsDefault.default).renderError();
         console.error(err);
     }
 }
 function init() {
-    (0, _recipeViewJsDefault.default).hashchangeHandler(controlRecipes);
+    (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
 }
 init();
 
@@ -725,7 +725,7 @@ async function getJSON(url) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs"}],"l60JC":[function(require,module,exports) {
+},{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"l60JC":[function(require,module,exports) {
 /************************************************************************ */ /**********VIEW, - RENDERING THE RECIPE FROM THE API TO THE ***************/ /***********************BY USING CLASSES******************************** */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("url:../../img/icons.svg");
@@ -734,7 +734,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class RecipeView {
     _parentElement = document.querySelector(".recipe");
     _data;
-    _Errormessage = "No recipes found for your query. Please try again!";
+    _errorMessage = "We could not find that recipe. Please try an other one!";
     _message = "Start by searching for a recipe or an ingredient. Have fun!";
     render(data) {
         this._data = data;
@@ -841,7 +841,7 @@ class RecipeView {
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markUp);
     }
-    renderError(message = this._Errormessage) {
+    renderError(message = this._errorMessage) {
         this._clear();
         const markUp = `<div class="error">
                     <div>
@@ -866,7 +866,7 @@ class RecipeView {
         this._parentElement.insertAdjacentHTML("afterbegin", markUp);
     }
     // Listening for the hashchange and load event to load a recipe
-    hashchangeHandler(handler) {
+    addHandlerRender(handler) {
         [
             "hashchange",
             "load"
