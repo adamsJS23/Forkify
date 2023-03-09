@@ -2,14 +2,15 @@
 /*********************MODEL, -STATE-BUSINESS LOGIC- HTTP LIBRARY**********/
 /************************************************************************ */
 import { API_URL } from './config.js';
+import { RESULT_PER_PAGE } from './config.js';
 import { getJSON } from './helpers.js';
 /******Our state object ******/
 export const state = {
   recipe: {},
-  search: { query: '', results: [] },
+  search: { query: '', results: [], resultPerPage: RESULT_PER_PAGE, page: 1 },
   bookmarks: '',
 };
-/************************** */
+/**********************LODING RECIPE BUSINESS LOGIC************************ */
 export async function loadRecipe(id) {
   try {
     const data = await getJSON(`${API_URL}/${id}?`);
@@ -47,4 +48,12 @@ export async function loadSearchResult(query) {
   } catch (err) {
     throw err;
   }
+}
+
+/*********************PAGINATION BUSINESS LOGIC******************************* */
+export function getSearchResult(page = state.search.page) {
+  state.search.page = page;
+  const start = (page - 1) * state.search.resultPerPage; //0
+  const end = page * state.search.resultPerPage; //10
+  return state.search.results.slice(start, end);
 }

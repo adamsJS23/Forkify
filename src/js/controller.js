@@ -7,6 +7,8 @@ import * as model from './model.js'; //Import everything and rename it
 import RecipeView from './views/recipeView.js';
 import SearchResultView from './views/searchResultView.js';
 import SearchView from './views/searchView.js';
+import PaginationView from './views/paginationView.js';
+import paginationView from './views/paginationView.js';
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -58,15 +60,34 @@ async function controlSearchResult() {
 
     if (model.state.search.results.length === 0) throw new Error();
 
+    //  Reset page propertie to 1 when make a new search
+    model.state.search.page = 1;
+
     // Render Search result
-    SearchResultView.render(model.state.search.results);
+    // SearchResultView.render(model.state.search.results); Here we used to passed all the results in one go
+    SearchResultView.render(model.getSearchResult());
+
+    // Rendering first the pagination buttons
+    PaginationView.render(model.state.search);
   } catch (err) {
     SearchResultView.renderError();
   }
 }
 
+/************************************************** */
+/***********CONTROL PAGINATION***************** */
+/************************************************** */
+
+function controlPagination(goToPage) {
+  // Rendering new search result
+  SearchResultView.render(model.getSearchResult(goToPage));
+  // Render new pagination
+  PaginationView.render(model.state.search);
+}
+
 function init() {
   RecipeView.addHandlerRender(controlRecipes);
   SearchView.addHandlerSearch(controlSearchResult);
+  PaginationView.addHandlerPagination(controlPagination);
 }
 init();
