@@ -1,26 +1,61 @@
 /************************************************************************ */
 /**********VIEW, - RENDERING THE RECIPE FROM THE API TO THE ***************/
 /***********************BY USING CLASSES******************************** */
-
+import  View  from './View.js';
 import icons from 'url:../../img/icons.svg';
 // import { Fraction } from 'fractional';
 
-class RecipeView {
+class RecipeView extends View{
   _parentElement = document.querySelector('.recipe');
-  _data;
   _errorMessage = 'We could not find that recipe. Please try an other one!';
   _message = 'Start by searching for a recipe or an ingredient. Have fun!';
 
-  render(data) {
-    this._data = data;
-    const markUp = this._generateMarkup();
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markUp);
-  }
+  // render(data) {
+  //   this._data = data;
+  //   const markUp = this._generateMarkup();
+  //   this._clear();
+  //   this._parentElement.insertAdjacentHTML('afterbegin', markUp);
+  // }
 
-  _clear() {
-    this._parentElement.innerHTML = '';
-  }
+  // _clear() {
+  //   this._parentElement.innerHTML = '';
+  // }
+
+  // renderSpinner() {
+  //   const markUp = `<div class="spinner">
+  //                     <svg>
+  //                       <use href="${icons}#icon-loader"></use>
+  //                     </svg>
+  //                   </div>`;
+  //   this._clear();
+  //   this._parentElement.insertAdjacentHTML('afterbegin', markUp);
+  // }
+
+  // renderError(message = this._errorMessage) {
+  //   this._clear();
+  //   const markUp = `<div class="error">
+  //                   <div>
+  //                       <svg>
+  //                         <use href="${icons}#icon-alert-triangle"></use>
+  //                       </svg>
+  //                     </div>
+  //                     <p>${message}</p>
+  //                 </div>`;
+  //   this._parentElement.insertAdjacentHTML('afterbegin', markUp);
+  // }
+
+  // renderMessage(message = this._message) {
+  //   this._clear();
+  //   const markUp = `<div class="message">
+  //                   <div>
+  //                     <svg>
+  //                       <use href="${icons}#icon-smile"></use>
+  //                     </svg>
+  //                   </div>
+  //                   <p>${message}</p>
+  //                 </div>`;
+  //   this._parentElement.insertAdjacentHTML('afterbegin', markUp);
+  // }
 
   _generateMarkup() {
     return `<figure class="recipe__fig">
@@ -66,15 +101,11 @@ class RecipeView {
                                     </div>
   
                                     <div class="recipe__user-generated">
-                                      <svg>
-                                        <use href="${icons}#icon-user"></use>
-                                      </svg>
+                                      
                                     </div>
                                     <button class="btn--round">
                                       <svg class="">
-                                        <use href="${
-                                          this._data.sourceUrl
-                                        }"></use>
+                                        <use href="${icons}#icon-bookmark"></use>
                                       </svg>
                                     </button>
                                   </div>
@@ -118,49 +149,14 @@ class RecipeView {
             <svg class="recipe__icon">
               <use href="${icons}#icon-check"></use>
             </svg>
-            <div class="recipe__quantity">${
-              quantity ? quantity: ''
-            }</div>
+            <div class="recipe__quantity">${quantity ? quantity : ''}</div>
             <div class="recipe__description">
               <span class="recipe__unit">${unit ? unit : ''}</span>
               ${description}
             </div>
           </li>`;
   }
-  renderSpinner() {
-    const markUp = `<div class="spinner">
-                      <svg>
-                        <use href="${icons}#icon-loader"></use>
-                      </svg>
-                    </div>`;
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markUp);
-  }
-  renderError(message = this._errorMessage) {
-    this._clear();
-    const markUp = `<div class="error">
-                    <div>
-                        <svg>
-                          <use href="${icons}#icon-alert-triangle"></use>
-                        </svg>
-                      </div>
-                      <p>${message}</p>
-                  </div>`;
-    this._parentElement.insertAdjacentHTML('afterbegin', markUp);
-  }
-
-  renderMessage(message = this._message) {
-    this._clear();
-    const markUp = `<div class="message">
-                    <div>
-                      <svg>
-                        <use href="${icons}#icon-smile"></use>
-                      </svg>
-                    </div>
-                    <p>${message}</p>
-                  </div>`;
-    this._parentElement.insertAdjacentHTML('afterbegin', markUp);
-  }
+  
 
   // Listening for the hashchange and load event to load a recipe
   addHandlerRender(handler) {

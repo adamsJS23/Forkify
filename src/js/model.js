@@ -6,14 +6,14 @@ import { getJSON } from './helpers.js';
 /******Our state object ******/
 export const state = {
   recipe: {},
-  search: {},
+  search: { query: '', results: [] },
   bookmarks: '',
 };
 /************************** */
 export async function loadRecipe(id) {
   try {
     const data = await getJSON(`${API_URL}/${id}?`);
-    console.log(data)
+    console.log(data);
     const { recipe } = data.data;
 
     state.recipe = {
@@ -26,6 +26,24 @@ export async function loadRecipe(id) {
       ingredients: recipe.ingredients,
       image: recipe.image_url,
     };
+  } catch (err) {
+    throw err;
+  }
+}
+/************************SEARCH FOR A RECIPE BUSINESS LOGIC******************** */
+
+export async function loadSearchResult(query) {
+  try {
+    state.search.query = query;
+    const data = await getJSON(`${API_URL}?search=${query}`);
+    state.search.results = data.data.recipes.map(rec => {
+      return {
+        id: rec.id,
+        title: rec.title,
+        publisher: rec.publisher,
+        image: rec.image_url,
+      };
+    });
   } catch (err) {
     throw err;
   }
