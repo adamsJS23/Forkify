@@ -8,7 +8,8 @@ import { getJSON } from './helpers.js';
 export const state = {
   recipe: {},
   search: { query: '', results: [], resultPerPage: RESULT_PER_PAGE, page: 1 },
-  bookmarks: '',
+  servingsValue: '',
+  bookmarks: [],
 };
 /**********************LODING RECIPE BUSINESS LOGIC************************ */
 export async function loadRecipe(id) {
@@ -56,4 +57,24 @@ export function getSearchResult(page = state.search.page) {
   const start = (page - 1) * state.search.resultPerPage; //0
   const end = page * state.search.resultPerPage; //10
   return state.search.results.slice(start, end);
+}
+
+/*********************PAGINATION BUSINESS LOGIC******************************* */
+export function getservings(newServings) {
+  const newIngQuanity = state.recipe.ingredients.map(ing => {
+    quantity = ing.quantity
+      ? ((ing.quantity * newServings) / state.recipe.servings).toFixed(2)
+      : '';
+    unit = ing.unit;
+    description = ing.description;
+    return {
+      unit,
+      quantity,
+      description,
+    };
+
+  });
+  state.recipe.servings=newServings
+  state.recipe.ingredients = newIngQuanity;
+
 }

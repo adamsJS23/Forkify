@@ -1,15 +1,8 @@
-/************************************************************************ */
-/**********VIEW, - RENDERING THE RECIPE FROM THE API TO THE ***************/
-/***********************BY USING CLASSES******************************** */
-import  View  from './View.js';
+import View from './View.js';
 import icons from 'url:../../img/icons.svg';
-// import { Fraction } from 'fractional';
 
-class RecipeView extends View{
+class ServingsView extends View {
   _parentElement = document.querySelector('.recipe');
-  _errorMessage = 'We could not find that recipe. Please try an other one!';
-  _message = 'Start by searching for a recipe or an ingredient. Have fun!';
-
   _generateMarkup() {
     return `<figure class="recipe__fig">
                         <img src="${this._data.image}" alt="${
@@ -109,14 +102,22 @@ class RecipeView extends View{
             </div>
           </li>`;
   }
-  
 
-  // Listening for the hashchange and load event to load a recipe
-  addHandlerRender(handler) {
-    ['hashchange', 'load'].forEach(event => {
-      window.addEventListener(event, handler);
+  addHandlerServings(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      e.preventDefault();
+      const btn = e.target.closest('.btn--tiny');
+      if (!btn) return;
+      let newServings = +document.querySelector('.recipe__info-data--people')
+        .textContent;
+
+      btn.classList.contains('btn--increase-servings')
+        ? newServings++
+        : newServings--;
+
+      handler(newServings);
     });
   }
 }
 
-export default new RecipeView();
+export default new ServingsView();

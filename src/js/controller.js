@@ -9,6 +9,7 @@ import SearchResultView from './views/searchResultView.js';
 import SearchView from './views/searchView.js';
 import PaginationView from './views/paginationView.js';
 import paginationView from './views/paginationView.js';
+import ServingsView from './views/servingsView.js'
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -65,9 +66,11 @@ async function controlSearchResult() {
 
     // Render Search result
     // SearchResultView.render(model.state.search.results); Here we used to passed all the results in one go
+
+    // The code line below will render the frist ten result
     SearchResultView.render(model.getSearchResult());
 
-    // Rendering first the pagination buttons
+    // Rendering for the first time pagination buttons
     PaginationView.render(model.state.search);
   } catch (err) {
     SearchResultView.renderError();
@@ -81,13 +84,24 @@ async function controlSearchResult() {
 function controlPagination(goToPage) {
   // Rendering new search result
   SearchResultView.render(model.getSearchResult(goToPage));
-  // Render new pagination
+  // Rendering new pagination buttons
   PaginationView.render(model.state.search);
 }
+
+/************************************************** */
+/***********CONTROL SERVINGS***************** */
+/************************************************** */
+
+  function controlServings(newServings){
+    model.getservings(newServings)
+    ServingsView.render(model.state.recipe)
+  }
+
 
 function init() {
   RecipeView.addHandlerRender(controlRecipes);
   SearchView.addHandlerSearch(controlSearchResult);
   PaginationView.addHandlerPagination(controlPagination);
+  ServingsView.addHandlerServings(controlServings)
 }
 init();
