@@ -9,8 +9,6 @@ class PaginationView extends View {
       this._data.results.length / this._data.resultPerPage
     );
     const currPage = this._data.page;
-    console.log(pageNumber);
-    console.log(currPage);
     // We are on Page1 and there are others pages
     if (currPage === 1 && pageNumber > 1) {
       return `<button class="btn--inline pagination__btn--next" data-curr-page='${

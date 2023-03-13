@@ -4,6 +4,7 @@ import icons from 'url:../../img/icons.svg';
 class ServingsView extends View {
   _parentElement = document.querySelector('.recipe');
   _generateMarkup() {
+    console.log(this._data);
     return `<figure class="recipe__fig">
                         <img src="${this._data.image}" alt="${
       this._data.title
@@ -33,12 +34,16 @@ class ServingsView extends View {
                                       <span class="recipe__info-text">servings</span>
   
                                       <div class="recipe__info-buttons">
-                                        <button class="btn--tiny btn--decrease-servings">
+                                        <button class="btn--tiny btn--decrease-servings" data-new-servings="${
+                                          this._data.servings - 1
+                                        }">
                                           <svg>
                                             <use href="${icons}#icon-minus-circle"></use>
                                           </svg>
                                         </button>
-                                        <button class="btn--tiny btn--increase-servings">
+                                        <button class="btn--tiny btn--increase-servings" data-new-servings="${
+                                          this._data.servings + 1
+                                        }">
                                           <svg>
                                             <use href="${icons}#icon-plus-circle"></use>
                                           </svg>
@@ -108,14 +113,8 @@ class ServingsView extends View {
       e.preventDefault();
       const btn = e.target.closest('.btn--tiny');
       if (!btn) return;
-      let newServings = +document.querySelector('.recipe__info-data--people')
-        .textContent;
-
-      btn.classList.contains('btn--increase-servings')
-        ? newServings++
-        : newServings--;
-
-      handler(newServings);
+      const {newServings} = btn.dataset;
+      newServings > 0 && handler(+newServings);
     });
   }
 }

@@ -1,11 +1,11 @@
 /************************************************************************ */
 /**********VIEW, - RENDERING THE RECIPE FROM THE API TO THE ***************/
 /***********************BY USING CLASSES******************************** */
-import  View  from './View.js';
+import View from './View.js';
 import icons from 'url:../../img/icons.svg';
 // import { Fraction } from 'fractional';
 
-class RecipeView extends View{
+class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
   _errorMessage = 'We could not find that recipe. Please try an other one!';
   _message = 'Start by searching for a recipe or an ingredient. Have fun!';
@@ -40,12 +40,16 @@ class RecipeView extends View{
                                       <span class="recipe__info-text">servings</span>
   
                                       <div class="recipe__info-buttons">
-                                        <button class="btn--tiny btn--decrease-servings">
+                                        <button class="btn--tiny btn--decrease-servings" data-new-servings="${
+                                          this._data.servings - 1
+                                        }">
                                           <svg>
                                             <use href="${icons}#icon-minus-circle"></use>
                                           </svg>
                                         </button>
-                                        <button class="btn--tiny btn--increase-servings">
+                                        <button class="btn--tiny btn--increase-servings" data-new-servings="${
+                                          this._data.servings + 1
+                                        }">
                                           <svg>
                                             <use href="${icons}#icon-plus-circle"></use>
                                           </svg>
@@ -109,12 +113,21 @@ class RecipeView extends View{
             </div>
           </li>`;
   }
-  
 
   // Listening for the hashchange and load event to load a recipe
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(event => {
       window.addEventListener(event, handler);
+    });
+  }
+
+  addHandlerServings(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      e.preventDefault();
+      const btn = e.target.closest('.btn--tiny');
+      if (!btn) return;
+      const { newServings } = btn.dataset;
+      newServings > 0 && handler(+newServings);
     });
   }
 }
