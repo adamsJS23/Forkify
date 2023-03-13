@@ -9,7 +9,7 @@ import SearchResultView from './views/searchResultView.js';
 import SearchView from './views/searchView.js';
 import PaginationView from './views/paginationView.js';
 import paginationView from './views/paginationView.js';
-import ServingsView from './views/servingsView.js'
+import recipeView from './views/recipeView.js';
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -92,16 +92,15 @@ function controlPagination(goToPage) {
 /***********CONTROL SERVINGS***************** */
 /************************************************** */
 
-  function controlServings(newServings){
-    model.getservings(newServings)
-    ServingsView.render(model.state.recipe)
-  }
-
+function controlServings(newServings) {
+  model.getservings(newServings);
+  RecipeView.render(model.state.recipe);
+}
 
 function init() {
   RecipeView.addHandlerRender(controlRecipes);
   SearchView.addHandlerSearch(controlSearchResult);
   PaginationView.addHandlerPagination(controlPagination);
-  ServingsView.addHandlerServings(controlServings)
+  recipeView.addHandlerServings(controlServings);
 }
 init();

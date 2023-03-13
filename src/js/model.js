@@ -61,20 +61,11 @@ export function getSearchResult(page = state.search.page) {
 
 /*********************PAGINATION BUSINESS LOGIC******************************* */
 export function getservings(newServings) {
-  const newIngQuanity = state.recipe.ingredients.map(ing => {
-    quantity = ing.quantity
+  state.recipe.ingredients.forEach(ing => {
+
+    ing.quantity = ing.quantity
       ? ((ing.quantity * newServings) / state.recipe.servings).toFixed(2)
       : '';
-    unit = ing.unit;
-    description = ing.description;
-    return {
-      unit,
-      quantity,
-      description,
-    };
-
   });
-  state.recipe.servings=newServings
-  state.recipe.ingredients = newIngQuanity;
-
+  state.recipe.servings = newServings;
 }
